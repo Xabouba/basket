@@ -1,4 +1,6 @@
 import sys
+import csv
+import os.path
 
 def init_basket():
     '''
@@ -33,11 +35,12 @@ def main_menu():
     ''' Print the menu available for the user '''
     print "Menu"
     print "(1) Show your current basket and its total cost."
-    print "(2) Import a basket."
-    print "(3) Add some fruits."
-    print "(4) Remove some fruits."
-    print "(5) Reset your basket."
-    print "(6) Show unit cost of the fruits."
+    print "(2) Import a basket as a list."
+    print "(3) Import a basket using a CSV file"
+    print "(4) Add some fruits."
+    print "(5) Remove some fruits."
+    print "(6) Reset your basket."
+    print "(7) Show unit cost of the fruits."
 
 def print_unit_cost():
     ''' Print the unit cost of each fruit available '''
@@ -78,6 +81,20 @@ def remove_fruit(fruit,number):
     else:
         return False #Return false to invalidate the removal
 
+def add_CSV_basket(test_CSV_basket):
+    your_list = []
+    if os.path.isfile(test_CSV_basket):
+        if test_CSV_basket.endswith('.csv'):
+            with open(test_CSV_basket, 'rb') as f:
+                reader = csv.reader(f)
+                for row in f:
+                    your_list.append(row.strip())
+        else:
+            print "Please choose a CSV file"
+    else:
+        print "Please enter a correct path"
+    add_to_basket(your_list)
+
 def add_basket(test_basket):
     '''
     Add a list of fruit to the basket
@@ -85,7 +102,6 @@ def add_basket(test_basket):
     @type test_basket: string
     @param test_basket: The input of the user to be parsed into a list of fruits
     '''
-    
     if test_basket: #If the input is not void
         list_input = map(str, test_basket.split(',')) #Try to create a list from the input
         if isinstance(list_input, list): #If the list is created
@@ -155,12 +171,16 @@ def basket_menu():
             if test_basket:
                 add_basket(test_basket)
         elif testVar == 3:
-            test_input(True)
+            test_CSV = raw_input("Enter path to CSV file: ")
+            if test_CSV:
+                add_CSV_basket(test_CSV)
         elif testVar == 4:
-            test_input(False)
+            test_input(True)
         elif testVar == 5:
-            init_basket()
+            test_input(False)
         elif testVar == 6:
+            init_basket()
+        elif testVar == 7:
             print_unit_cost()
             print "Your basket has been reset"
  
