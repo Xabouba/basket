@@ -82,6 +82,12 @@ def remove_fruit(fruit,number):
         return False #Return false to invalidate the removal
 
 def add_CSV_basket(test_CSV_basket):
+    '''
+    Add a basket within a CSV file
+
+    @type test_CSV_basket: string
+    @param test_CSV_basket: The path & file name to the CSV file
+    '''
     your_list = []
     if os.path.isfile(test_CSV_basket):
         if test_CSV_basket.endswith('.csv'):

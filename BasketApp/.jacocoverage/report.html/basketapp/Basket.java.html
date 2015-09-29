@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Basket.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;BasketApp&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">basketapp</a> &gt; <span class="el_source">Basket.java</span></div><h1>Basket.java</h1><pre class="source lang-java linenums">package basketapp;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+
+/**
+ *
+ * @author xavier.guerbet 
+ */
+public class Basket {
+    public HashMap&lt;Fruit, Integer&gt; hmap;
+    public double totalCost;
+        
+<span class="fc" id="L17">    public Basket (){</span>
+<span class="fc" id="L18">        this.hmap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L19">        this.totalCost = 0.0;</span>
+<span class="fc" id="L20">    }</span>
+    
+    /**
+     * Display the content of the basket
+     */
+    public void displayBasket (){
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (this.totalCost == 0.0) {</span>
+<span class="fc" id="L27">            System.out.println(&quot;The basket is currently empty&quot;);</span>
+        } else {
+<span class="fc" id="L29">            System.out.println(&quot;The basket is made of: &quot;);      </span>
+<span class="fc" id="L30">            this.hmap.entrySet().stream().forEach((mentry) -&gt; {</span>
+<span class="fc" id="L31">                System.out.println(mentry.getKey() + &quot;: &quot; + mentry.getValue());</span>
+<span class="fc" id="L32">            });</span>
+<span class="fc" id="L33">            System.out.println(&quot;The total cost of this basket is &quot; + totalCost);</span>
+        }
+<span class="fc" id="L35">    }</span>
+    
+    /**
+     * Add the number of fruit to the basket
+     * 
+     * @param fruit     the Fruit to add to the basket
+     * @param number    the number of fruits to add (integer)
+     */
+    public void addFruit (Fruit fruit, int number){
+        //Check if there is at least one occurence of fruit in the hashmap of the basket
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (this.hmap.containsKey(fruit)){</span>
+<span class="fc" id="L46">            this.hmap.put(fruit, this.hmap.get(fruit) + number);</span>
+        } else {
+<span class="fc" id="L48">            this.hmap.put(fruit, number);</span>
+        }
+        //Update the total cost of the basket
+<span class="fc" id="L51">        totalCost += fruit.getCost()*number;</span>
+<span class="fc" id="L52">        System.out.println(&quot;Added &quot; + number + &quot; &quot; + fruit.name() + &quot; to the basket&quot;);</span>
+<span class="fc" id="L53">    }</span>
+    
+    /**
+     * Remove the number of fruit from the basket if possible
+     * 
+     * @param fruit     the Fruit to remove to the basket
+     * @param number    the number of fruits to remove from the basket
+     */
+    public void removeFruit (Fruit fruit, int number){
+        //Check if there is not enough fruit
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        if (this.hmap.get(fruit) &lt; number){</span>
+<span class="nc" id="L64">            System.out.println(&quot;There is not enough &quot; + fruit.name() + &quot; to remove&quot;);</span>
+        } else {
+            //Remove the netry from the hashmap if there is no fruit anymore in the basket
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            if (this.hmap.get(fruit) == number){</span>
+<span class="fc" id="L68">                this.hmap.remove(fruit);</span>
+<span class="fc" id="L69">                System.out.println(&quot;There is no &quot; + fruit.name() + &quot; anymore in your basket&quot;);</span>
+            } else {
+<span class="fc" id="L71">                this.hmap.put(fruit, this.hmap.get(fruit) - number);</span>
+<span class="fc" id="L72">                System.out.println(&quot;Removed &quot; + number + &quot; &quot; + fruit.name() + &quot; from the basket&quot;);</span>
+            }
+            //Update the total cost of the basket
+<span class="fc" id="L75">            totalCost -= fruit.getCost()*number;</span>
+        }
+<span class="fc" id="L77">    }</span>
+    
+    /**
+     * Add a basket to the current basket
+     * 
+     * @param basket the content of a basket to add to the current basket
+     */
+    public void addBasket (Basket basket){
+<span class="fc" id="L85">        basket.hmap.entrySet().stream().forEach((mentry) -&gt; {</span>
+<span class="fc" id="L86">            addFruit((Fruit)mentry.getKey(), (int)mentry.getValue());</span>
+<span class="fc" id="L87">        });</span>
+<span class="fc" id="L88">    }</span>
+    
+    /**
+     * Remove a basket from the current basket
+     * 
+     * @param basket the content of current basket to remove
+     */
+    public void removeBasket (Basket basket){
+        try {
+<span class="fc" id="L97">            basket.hmap.entrySet().stream().forEach((mentry) -&gt; {</span>
+<span class="fc" id="L98">            removeFruit((Fruit)mentry.getKey(), (int)mentry.getValue());</span>
+<span class="fc" id="L99">            });</span>
+<span class="nc" id="L100">        } catch (NullPointerException e){</span>
+<span class="fc" id="L101">        }</span>
+<span class="fc" id="L102">    }</span>
+    
+    /**
+     * Return the Fruit from a string
+     * If not found, return null
+     * 
+     * @param str   a name of fruit
+     * @return      the Fruit with the name str
+     */
+    public static Fruit stringAsFruit(String str){
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        for (Fruit fruit: Fruit.values()){</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">            if (fruit.name().equalsIgnoreCase(str))</span>
+<span class="fc" id="L114">                return fruit;</span>
+        }
+<span class="fc" id="L116">        return null;</span>
+    }
+    
+    /**
+     * Find, read and create basket from a CSV file
+     * 
+     * @param file the path to a CSV file to read from
+     */
+    public void readCSVToBasket (String file){
+<span class="fc" id="L125">	BufferedReader br = null;</span>
+	String line;
+        String cvsSplitBy;
+
+<span class="fc" id="L129">        cvsSplitBy = &quot;,&quot;;</span>
+<span class="fc" id="L130">        HashMap&lt;Fruit,Integer&gt; currentHmap = new HashMap&lt;&gt;();</span>
+	try {
+<span class="fc" id="L132">            br = new BufferedReader(new FileReader(file));</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">            while ((line = br.readLine()) != null) {</span>
+<span class="fc" id="L134">                String[] fruitStr = line.split(cvsSplitBy);</span>
+                Fruit fruit;
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">                if(fruitStr.length &gt; 0){</span>
+<span class="fc" id="L137">                    fruit = stringAsFruit(fruitStr[0]);</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">                    if(fruit != null){</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">                        if (currentHmap.containsKey(fruit)){</span>
+<span class="fc" id="L140">                            currentHmap.put(fruit, currentHmap.get(fruit) + 1);</span>
+                        } else {
+<span class="fc" id="L142">                            currentHmap.put(fruit, 1);</span>
+                        }
+                    }                    
+                }
+<span class="fc" id="L146">            }</span>
+<span class="fc" id="L147">            Basket basket = new Basket();</span>
+<span class="fc" id="L148">            basket.hmap = currentHmap;</span>
+<span class="fc" id="L149">            this.addBasket(basket);</span>
+<span class="fc" id="L150">	} catch (FileNotFoundException e) {</span>
+<span class="nc" id="L151">	} catch (IOException e) {</span>
+	} finally {
+<span class="pc bpc" id="L153" title="6 of 8 branches missed.">            if (br != null) {</span>
+                try {
+<span class="pc" id="L155">                    br.close();</span>
+<span class="nc" id="L156">                } catch (IOException e) {</span>
+<span class="pc" id="L157">                }</span>
+            }
+	}
+<span class="fc" id="L160">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

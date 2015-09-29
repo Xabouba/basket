@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Fruit.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;BasketApp&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">basketapp</a> &gt; <span class="el_source">Fruit.java</span></div><h1>Fruit.java</h1><pre class="source lang-java linenums">package basketapp;
+
+/**
+ *
+ * @author xavier.guerbet
+ */
+<span class="pc" id="L7">public enum Fruit {</span>
+<span class="fc" id="L8">    Banana(&quot;B&quot;, &quot;Banana&quot;, 1.5),</span>
+<span class="fc" id="L9">    Orange(&quot;O&quot;, &quot;Orange&quot;, 2.3),</span>
+<span class="fc" id="L10">    Apple(&quot;A&quot;, &quot;Apple&quot;, 2.8),</span>
+<span class="fc" id="L11">    Lemon(&quot;L&quot;, &quot;Lemon&quot;, 4.1),</span>
+<span class="fc" id="L12">    Peach(&quot;P&quot;, &quot;Peach&quot;, 3.1);</span>
+    
+    private final String abbr;
+    private final String full;
+    private final double fruitCost;
+
+<span class="fc" id="L18">    Fruit(String _abbr, String _full, double _fruitCost){</span>
+<span class="fc" id="L19">        this.abbr = _abbr;</span>
+<span class="fc" id="L20">        this.full = _full;</span>
+<span class="fc" id="L21">        this.fruitCost = _fruitCost;</span>
+<span class="fc" id="L22">    }</span>
+    
+    public String getAbbr(){
+<span class="nc" id="L25">        return abbr;</span>
+    }
+    
+    public String getFull(){
+<span class="nc" id="L29">        return full;</span>
+    }
+
+    public double getCost(){
+<span class="fc" id="L33">        return fruitCost;</span>
+    }
+    
+    /**
+     * Display the cost of each fruit available in a basket
+     */
+    public static void displayUnitCost() {
+<span class="nc" id="L40">        System.out.println(&quot;Unit cost of each fruit: &quot;);</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        for (Fruit fruit: Fruit.values()){</span>
+<span class="nc" id="L42">            System.out.println(&quot;(&quot; + fruit.getAbbr() + &quot;) &quot; + fruit.name() + &quot;: &quot; + fruit.getCost());</span>
+        }
+<span class="nc" id="L44">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

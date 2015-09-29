@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BasketSwingMain.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;BasketApp&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">basketapp</a> &gt; <span class="el_source">BasketSwingMain.java</span></div><h1>BasketSwingMain.java</h1><pre class="source lang-java linenums">package basketapp;
+
+import java.io.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.SwingUtilities;
+
+public class BasketSwingMain extends JPanel implements ActionListener {
+    static private final String newline = &quot;\n&quot;;
+    static private Basket basket;
+    JButton displayBasketButton, displayUnitCostButton, addFruitButton, removeFruitButton, resetButton, openButton;
+    JTextArea log;
+    JFileChooser fc;
+    
+    public BasketSwingMain() {
+<span class="nc" id="L17">        super(new BorderLayout());</span>
+<span class="nc" id="L18">        basket = new Basket();</span>
+        
+        //Define the log box containing all information to display
+<span class="nc" id="L21">        log = new JTextArea(20,20);</span>
+<span class="nc" id="L22">        PrintStream printStream = new PrintStream(new CustomOutputStream(log));</span>
+<span class="nc" id="L23">        System.setOut(printStream);</span>
+<span class="nc" id="L24">        System.setErr(printStream);</span>
+<span class="nc" id="L25">        log.setMargin(new Insets(5,5,5,5));</span>
+<span class="nc" id="L26">        log.setEditable(false);</span>
+<span class="nc" id="L27">        JScrollPane scrollPane = new JScrollPane(log);</span>
+
+        //Display Basket
+<span class="nc" id="L30">        displayBasketButton = new JButton(&quot;Display basket&quot;);</span>
+<span class="nc" id="L31">        displayBasketButton.addActionListener(this);</span>
+        //Display Unit cost
+<span class="nc" id="L33">        displayUnitCostButton = new JButton(&quot;Display fruit cost&quot;);</span>
+<span class="nc" id="L34">        displayUnitCostButton.addActionListener(this);</span>
+        //Add fruit 
+<span class="nc" id="L36">        addFruitButton = new JButton(&quot;Add fruit&quot;);</span>
+<span class="nc" id="L37">        addFruitButton.addActionListener(this);</span>
+        //Remove fruit
+<span class="nc" id="L39">        removeFruitButton = new JButton(&quot;Remove fruit&quot;);</span>
+<span class="nc" id="L40">        removeFruitButton.addActionListener(this);</span>
+        //Reset basket
+<span class="nc" id="L42">        resetButton = new JButton(&quot;Reset basket&quot;);</span>
+<span class="nc" id="L43">        resetButton.addActionListener(this);</span>
+        //Create a file chooser
+<span class="nc" id="L45">        fc = new JFileChooser();</span>
+<span class="nc" id="L46">        openButton = new JButton(&quot;Import from CSV file&quot;);</span>
+<span class="nc" id="L47">        openButton.addActionListener(this);</span>
+
+        //Add butotn to the panel created
+<span class="nc" id="L50">        JPanel buttonPanel = new JPanel();</span>
+<span class="nc" id="L51">        buttonPanel.add(displayBasketButton);</span>
+<span class="nc" id="L52">        buttonPanel.add(displayUnitCostButton);</span>
+<span class="nc" id="L53">        buttonPanel.add(addFruitButton);</span>
+<span class="nc" id="L54">        buttonPanel.add(removeFruitButton);</span>
+<span class="nc" id="L55">        buttonPanel.add(resetButton);</span>
+<span class="nc" id="L56">        buttonPanel.add(openButton);</span>
+
+        //Add the buttons and the log to this panel.
+<span class="nc" id="L59">        add(buttonPanel, BorderLayout.PAGE_START);</span>
+<span class="nc" id="L60">        add(scrollPane, BorderLayout.CENTER);</span>
+<span class="nc" id="L61">    }</span>
+
+    /**
+     * Contains all actions available
+     * 
+     * @param e
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {  
+<span class="nc" id="L70">        log.append(newline);</span>
+        //Handle open button action.
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (e.getSource() == openButton) {</span>
+<span class="nc" id="L73">            int returnVal = fc.showOpenDialog(BasketSwingMain.this);</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            if (returnVal == JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc" id="L75">                File file = fc.getSelectedFile();</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">                if (file.getName().substring(file.getName().lastIndexOf(&quot;.&quot;) + 1).equals(&quot;csv&quot;)){</span>
+<span class="nc" id="L77">                    log.append(&quot;Opening: &quot; + file.getName() + &quot;.&quot; + newline);                </span>
+<span class="nc" id="L78">                    basket.readCSVToBasket(file.getPath());</span>
+                } else {
+<span class="nc" id="L80">                    log.append(&quot;Try to open a non CSV file&quot;);</span>
+                }
+<span class="nc" id="L82">            } else {</span>
+<span class="nc" id="L83">                log.append(&quot;Open command cancelled by user.&quot; + newline);</span>
+            }
+<span class="nc" id="L85">            log.setCaretPosition(log.getDocument().getLength());</span>
+
+        //Handle display basket button action.
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        } else if (e.getSource() == displayBasketButton) {</span>
+<span class="nc" id="L89">            basket.displayBasket();</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        } else if (e.getSource() == displayUnitCostButton) {</span>
+<span class="nc" id="L91">            Fruit.displayUnitCost();</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        } else if (e.getSource() == addFruitButton) {</span>
+<span class="nc" id="L93">            createAndShowChangeBasket(true);</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        } else if (e.getSource() == removeFruitButton) {</span>
+<span class="nc" id="L95">            createAndShowChangeBasket(false);</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        } else if (e.getSource() == resetButton) {</span>
+<span class="nc" id="L97">            log.append(&quot;The basket is now empty&quot;);</span>
+<span class="nc" id="L98">            basket = new Basket();</span>
+        }
+<span class="nc" id="L100">    }</span>
+
+    /**
+     * Show pop up for add/remove fruits from basket
+     * First, choose the fruit
+     * Second, enter number to add/remove if possible (input must be an integer)
+     * 
+     * @param isAdd 
+     */
+    public static void createAndShowChangeBasket(boolean isAdd){    
+<span class="nc" id="L110">        int number = 0;</span>
+<span class="nc" id="L111">        String resultStr = null;</span>
+
+        //First, select the fruit among the list
+<span class="nc" id="L114">        JPanel panel = new JPanel();</span>
+<span class="nc" id="L115">        panel.add(new JLabel(&quot;Please choose a fruit:&quot;));</span>
+        //Create a Combo Box containing all the available fruits
+<span class="nc" id="L117">        DefaultComboBoxModel model = new DefaultComboBoxModel();</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        for (Fruit fruit: Fruit.values()){</span>
+<span class="nc" id="L119">            model.addElement(fruit.name());</span>
+        }
+<span class="nc" id="L121">        JComboBox comboBox = new JComboBox(model);</span>
+<span class="nc" id="L122">        panel.add(comboBox);</span>
+        
+<span class="nc" id="L124">        int result = JOptionPane.showConfirmDialog(null, panel, &quot;Fruit&quot;, JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        switch (result) {</span>
+            case JOptionPane.OK_OPTION:
+<span class="nc" id="L127">                resultStr = (String) comboBox.getSelectedItem();</span>
+                break;
+        }
+        
+        //Second, get the number of fruits to add/remove (must be an integer)
+        try {
+<span class="nc" id="L133">            number = Integer.parseInt(JOptionPane.showInputDialog(&quot;How many fruit?&quot;, null));</span>
+<span class="nc" id="L134">        } catch (NumberFormatException e){</span>
+<span class="nc" id="L135">        }</span>
+
+        //
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (isAdd){</span>
+<span class="nc" id="L139">            basket.addFruit(Fruit.valueOf(resultStr), number);</span>
+        } else {
+<span class="nc" id="L141">            basket.removeFruit(Fruit.valueOf(resultStr), number);</span>
+        }
+<span class="nc" id="L143">    }</span>
+    
+    /**
+     * Create the 2 frames
+     * The main application creates a GUI containing all buttons and will exit on close
+     */
+    private static void createAndShowGUI() {
+<span class="nc" id="L150">        JFrame jframe = new JFrame(&quot;Basket Application&quot;);</span>
+<span class="nc" id="L151">        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L152">        jframe.add(new BasketSwingMain());</span>
+<span class="nc" id="L153">        jframe.pack();</span>
+<span class="nc" id="L154">        jframe.setVisible(true);</span>
+        
+<span class="nc" id="L156">        JFrame jframeFruit = new JFrame(&quot;Change Basket&quot;);</span>
+<span class="nc" id="L157">        jframeFruit.pack();</span>
+<span class="nc" id="L158">        jframeFruit.setVisible(false);</span>
+<span class="nc" id="L159">    }</span>
+
+    /**
+     * 
+     * @param args 
+     */
+    public static void main(String[] args) {
+<span class="nc" id="L166">        SwingUtilities.invokeLater(() -&gt; {</span>
+<span class="nc" id="L167">            createAndShowGUI();</span>
+<span class="nc" id="L168">        });</span>
+<span class="nc" id="L169">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
