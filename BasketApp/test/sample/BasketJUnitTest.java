@@ -8,7 +8,6 @@ package sample;
 import basketapp.Basket;
 import basketapp.Fruit;
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ConcurrentModificationException;
 import junit.framework.Assert;
@@ -26,7 +25,7 @@ public class BasketJUnitTest {
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 
     /**
-     * 
+     * Set up output stream for tests
      */
     @Before
     public void setUpStreams() {
@@ -35,7 +34,7 @@ public class BasketJUnitTest {
     }
 
     /**
-     * 
+     * Remove the output stream for tests
      */
     @After
     public void cleanUpStreams() {
@@ -43,7 +42,7 @@ public class BasketJUnitTest {
         System.setErr(null);
     }
     /**
-     *
+     * Test adding one orange to basket
      */
     @Test
     public void testAddOneOrangeBasket() {
@@ -53,7 +52,7 @@ public class BasketJUnitTest {
     }
     
     /**
-     *
+     * Test adding one orange two times
      */
     @Test
     public void testAddOneOrangeNonEmptyBasket() {
@@ -63,7 +62,7 @@ public class BasketJUnitTest {
         Assert.assertEquals(2, (int)basket.hmap.get(Fruit.Orange));
     }
     /**
-     *
+     * Test to display total cost for empty and non empty basket
      */
     @Test
     public void testTotalCost() {
@@ -74,7 +73,7 @@ public class BasketJUnitTest {
     }
     
     /**
-     *
+     * Test adding CSV basket of 330480 fruits within 1 sec
      */
     @Test (timeout = 1000)
     public void testAddCSVBasket() {
@@ -85,7 +84,7 @@ public class BasketJUnitTest {
     }
     
     /**
-     *
+     * Test getting value of a non existing fruit
      */
     @Test (expected = NullPointerException.class)
     public void testGetValueMissingFruit(){
@@ -94,7 +93,7 @@ public class BasketJUnitTest {
     }
     
     /**
-     *
+     * Test removing a fruit from a non empty basket
      */
     @Test
     public void testRemoveOneOrangeBasket () {
@@ -105,6 +104,9 @@ public class BasketJUnitTest {
         Assert.assertEquals(1, (int)basket.hmap.get(Fruit.Orange));
     }
 
+    /**
+     * Test removing a fruit from an empty basket
+     */
     @Test (expected = NullPointerException.class)
     public void testRemoveEmptyBasket(){
         Basket basket = new Basket();
